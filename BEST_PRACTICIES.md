@@ -11,11 +11,11 @@ When you need to fake any value, behaviour returned from fake, please implement 
 ```swift
 struct FakeURLPresenter: URLPresenterProtocol {
 	// This part is callback equivalent
-    var fake_presentURL: ((_ urlPath: URL, _ presentationMode: BMAPushNotificationPresentationMode) -> Void)?
+    var onPresentURL: ((_ urlPath: URL, _ presentationMode: BMAPushNotificationPresentationMode) -> Void)?
     
     // This if mocked/faked public function
     func presentURL(_ urlPath: URL, in presentationMode: BMAPushNotificationPresentationMode) {
-        fake_presentURL?(urlPath, presentationMode)
+        onPresentURL?(urlPath, presentationMode)
     }
 }
 ```
@@ -29,7 +29,7 @@ func testThat_GivenCorrectURL_WhenHandleURL_ThenWillPresentReturnedURLWithPresen
 	// ...
 	
 	// Our fake_presentURL callback definition
-    self.fakeUrlPresenter.fake_presentURL = { (urlPath, presentationMode) in
+    self.fakeUrlPresenter.onPresentURL = { (urlPath, presentationMode) in
     	 // Then - You can have many aproach when to assert, but it's not a part of this gist
         XCTAssertEqual("tt://Fixture", urlPath.absoluteString)
         XCTAssertEqual(BMAPushNotificationPresentationMode.modalScreen, presentationMode)
@@ -47,11 +47,11 @@ func testThat_GivenCorrectURL_WhenHandleURL_ThenWillPresentReturnedURLWithPresen
 ```swift
 class FakeClientSourceToURLMapper: ClientSourceToURLMapperProtocol {
 	// This part is callback equivalent
-    var fake_mapToURLPath: ((_ clientSource: BMClientSource, _ additionalParams: [AdditionalURLMapperParams: String]) -> String?)?
+    var onMapToURLPath: ((_ clientSource: BMClientSource, _ additionalParams: [AdditionalURLMapperParams: String]) -> String?)?
 
     // This if mocked/faked public function that return parameter
     func mapToURLPath(from clientSource: BMClientSource, additionalParams: [AdditionalURLMapperParams: String]) -> String? {
-        return self.fake_mapToURLPath?(clientSource, additionalParams)
+        return self.onMapToURLPath?(clientSource, additionalParams)
     }
 	
 	// ... other functions
@@ -63,7 +63,7 @@ class FakeClientSourceToURLMapper: ClientSourceToURLMapperProtocol {
 ```swift
 func testThat_GivenCorrectURL_WhenHandleURL_ThenWillMapCorrectClientSource() {
 	// ..
-    self.fakeClientToURLMapper.fake_mapToURLPath = { (clientSource, _) in
+    self.fakeClientToURLMapper.onMapToURLPath = { (clientSource, _) in
         return "tt://Fixture"
     }
 
