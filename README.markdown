@@ -102,6 +102,10 @@ For the above example using `UIGestureRecognizer`, 1 is unambiguous and preferre
 
 Swift types are automatically namespaced by the module that contains them and you should not add a class prefix such as RW. If two names from different modules collide you can disambiguate by prefixing the type name with the module name. However, only specify the module name when there is possibility for confusion which should be rare.
 
+**Please, note:**
+
+Whenever developer touches swift class with BMA prefix, this prefix should be removed from both: class name and file name.
+
 ```swift
 import SomeModule
 
